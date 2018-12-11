@@ -47,7 +47,7 @@ public class SocketClient
             }
             return point;
         }
-}
+    }
 
     public string connectStatus = "noconnect";
     public string Connect()
@@ -55,6 +55,7 @@ public class SocketClient
         try
         {
             connectStatus = "connecting";
+            Debug.Log("=========>>L>");
             Socket.Connect(GetPoint);
             Debug.LogFormat("Connect to {0} , port :{1} ", GetPoint.Address.ToString(), GetPoint.Port);
             connectStatus = "success";
@@ -68,12 +69,13 @@ public class SocketClient
         }
 
     }
-    public void Dispose()
+    public static void Dispose()
     {
-        if (Socket.Connected == true)
+        if (instance != null && instance.socket != null && (instance.socket.Connected == true))
         {
-            Socket.Disconnect(true);
-            Socket.Dispose();
+            instance.socket.Disconnect(true);
+            instance.socket.Close();
+            //instance.socket.Dispose();
         }
     }
 

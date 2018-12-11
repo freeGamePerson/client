@@ -14,24 +14,18 @@ public class init : MonoBehaviour
     private void Awake()
     {
         TextAsset textAsset;
-        Object assets  = ResourcesLoad.Instance.LoadAsset("config");
+        Object assets = ResourcesLoad.Instance.LoadAsset("config");
         if (assets)
         {
             textAsset = (TextAsset)assets;
             string content = System.Text.Encoding.UTF8.GetString(textAsset.bytes);
             Debug.Log(content);
             JsonData remoteConfig = JsonMapper.ToObject(content);
-            SocketClient.remoteServerIP = (string)remoteConfig[0]["ip"];
-            SocketClient.remoteServerPORT = (string)remoteConfig[0]["port"];
 
-            Debug.Log(SocketClient.remoteServerIP+ SocketClient.remoteServerPORT);
+            NetWorkServices.Instance.StartUp((string)remoteConfig[0]["ip"], (string)remoteConfig[0]["port"]);
         }
 
-        SocketClient.Instance.Connect();
-        if (SocketClient.Instance.connectStatus == "success")
-        {
-            
-        }
-        Debug.Log(SocketClient.Instance.connectStatus);
+
+
     }
 }
